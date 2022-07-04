@@ -29,4 +29,8 @@ with DAG(dag_id='branching2', schedule_interval='@daily', default_args=default_a
          task_id='inaccurate'
      )
 	 
-choose_best_model >> [accurate, inaccurate]
+     apprun = DummyOperator(
+         task_id='apprun',
+         trigger_rule='none_failed_or_skipped'
+     )
+choose_best_model >> [accurate, inaccurate] >> apprun
